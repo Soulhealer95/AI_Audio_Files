@@ -1,15 +1,16 @@
 # AI Audio
 
 # Files
-`audio_files`: dump to store audio files
-main.py: Python script. Requires several libraries
+- `audio_files`: dump to store audio files
+- `main.py`: Python script. 
+Requires several libraries
 	- Deepspeech (duh)
 	- wave
 	- numpy
 	- subprocess
 	- shlex
  
-`main_script.sh`: Bootstrap script that should be run to setup the environment and script to work. Requires virtualenv
+- `main_script.sh`: Bootstrap script that should be run to setup the environment and script to work. Requires virtualenv
 
 # Usage
 - `./main_script.sh`
