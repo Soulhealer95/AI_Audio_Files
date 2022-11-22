@@ -3,10 +3,14 @@ import wave
 import numpy as np
 import subprocess
 import shlex
+import os
 
-PATH_TO_MODEL="/home/soul/AI_Audio_Files/deepspeech-0.9.3-models.pbmm"
-PATH_TO_SCORER="/home/soul/AI_Audio_Files/deepspeech-0.9.3-models.scorer"
-PATH_TO_WAV="/home/soul/AI_Audio_Files/audio_files/Go_Home.wav"
+# Work from Project Dir
+cur_dir = os.getcwd()
+
+PATH_TO_MODEL=cur_dir + "/deepspeech-0.9.3-models.pbmm"
+PATH_TO_SCORER=cur_dir + "/deepspeech-0.9.3-models.scorer"
+PATH_TO_WAV=cur_dir + "/audio_files/Go_Home.wav"
 #PATH_TO_WAV="/home/soul/AI_Audio_Files/audio_files/Hello_World.wav"
 BASH_SCRIPT="/tmp/test.sh"
 
