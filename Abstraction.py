@@ -1,6 +1,7 @@
-"""
- * SPDX-License-Identifier: BSD-1-Clause
- *
+__author__ = "Shivam S"
+__email__ = "saxens12@mcmaster.ca"
+__license__ =
+ """
  * Copyright (c) 2022
  *	Shivam S.  All rights reserved.
  *
@@ -10,7 +11,7 @@
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  *
- * THIS SOFTWARE IS PROVIDED BY Berkeley Software Design, Inc. ``AS IS'' AND
+ * THIS SOFTWARE IS PROVIDED BY saxens12@mcmaster.ca. ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED.  IN NO EVENT SHALL Berkeley Software Design, Inc. BE LIABLE
