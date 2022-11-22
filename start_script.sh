@@ -21,10 +21,12 @@ if [[ `which virtualenv` == "" ]]; then
 fi
 virtualenv -p python3 $HOME/tmp/deepspeech-venv/
 source $HOME/tmp/deepspeech-venv/bin/activate
-pip3 install deepspeech
+if [[ `pip3 list | grep -i deep` == "" ]]; then 
+	pip3 install deepspeech; 
+fi
 
 echo "=====Done!======="
 echo "Starting Program..."
 echo ""
 sleep 1
-python3 `pwd`/start_deep.py
+python3 `pwd`/start_deep.py $1

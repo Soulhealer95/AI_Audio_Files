@@ -37,7 +37,8 @@ class Text_Processing:
         self.command = self.__extract_cmd()
         print(f"\n\n\n===== Executing Command for '{self.speech}' ===== \n\n\n")
         if self.command == RETURN_ERROR:
-            return SORRY_TEXT + self.speech
+            print(SORRY_TEXT + "'" + self.speech + "'")
+            return
         elif self.command == HELLO_OUT:
             print(HELLO_TEXT)
             return

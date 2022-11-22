@@ -21,7 +21,38 @@
 - `start_script.sh`: Bootstrap script that should be run to setup the environment and script to work. Requires virtualenv
 
 # Usage
-- `./start_deep.sh`
+- `./start_script.sh [relative path to audio wav file]`
+- example:
+```
+~/projects/AI_Audio_Files$ ./start_script.sh audio_files/Go_Home.wav 
+==========Welcome to the Bootstrap for this Speech Recognition Software===========
+******* Commands understood *******
+go home/ 'to <destination>'
+hello world
+More commands will be added soon.....
+
+==================Initializing Environment===================
+created virtual environment CPython3.8.10.final.0-64 in 107ms
+  creator CPython3Posix(dest=/home/shisaxena/tmp/deepspeech-venv, clear=False, global=False)
+  seeder FromAppData(download=False, pip=latest, setuptools=latest, wheel=latest, pkg_resources=latest, via=copy, app_data_dir=/home/shisaxena/.local/share/virtualenv/seed-app-data/v1.0.1.debian.1)
+  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
+=====Done!=======
+Starting Program...
+
+TensorFlow: v2.3.0-6-g23ad988
+DeepSpeech: v0.9.3-0-gf2e9c85
+2022-11-22 12:35:27.769249: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+
+
+
+===== Executing Command for 'go home' ===== 
+
+
+
+Running cd $HOME in a new shell; type 'exit' to leave: 
+~$ 
+```
 
 # Additional Info
 - Currently requires audio files with commands in WAV format. 
