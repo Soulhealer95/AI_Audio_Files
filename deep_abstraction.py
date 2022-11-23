@@ -1,7 +1,6 @@
 __author__ = "Shivam S"
 __email__ = "saxens12@mcmaster.ca"
-__license__ =
- """
+__license__ = """
  * Copyright (c) 2022
  *	Shivam S.  All rights reserved.
  *

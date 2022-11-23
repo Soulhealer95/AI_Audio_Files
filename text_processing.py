@@ -1,8 +1,7 @@
 
 __author__ = "Shivam S"
 __email__ = "saxens12@mcmaster.ca"
-__license__ =
- """
+__license__ = """
  * Copyright (c) 2022
  *	Shivam S.  All rights reserved.
  *
@@ -49,6 +48,8 @@ class Text_Processing:
             return HELLO_OUT
         elif self.speech.find("copy") != RETURN_ERROR:
             return self.__copy()
+        elif self.speech.find("move") != RETURN_ERROR:
+            return self.__move()
         else:
             return RETURN_ERROR
 
@@ -75,31 +76,56 @@ class Text_Processing:
             subprocess.run(command_prep, shell=True)
             subprocess.run(script_location, shell=True)
 
+    def __move(self):
+        to_index = self.speech.find(" to ")
+        if to_index == RETURN_ERROR:
+            print("Malformed sentence. expecting move <src> to <destination>")
+            return RETURN_ERROR
+
+        # expect format `move x to y`. so the first argument would be after the first space and just before the first and only 'to'
+        arg1 = self.speech[self.speech.find(" ")+1:to_index]
+        arg2 = self.speech[to_index+4:]
+        dest = self.__common_dest(arg2)
+        if dest == RETURN_ERROR:
+            print("Couldn't recognize destination. Trying as absolute path")
+            dest = arg2
+        return "mv " + arg1 + " " + dest
+
+
     def __copy(self):
         #TODO
         return "echo This is not yet supported!"
 
+    # Given location, return a path of commonly known locations
+    # Special Cases (Home, temp, downloads, pictures):
+    def __common_dest(self, loc):
+        cmd_args = ""
+        if loc.find("home") != RETURN_ERROR:
+            cmd_args = "$HOME"
+        elif loc.find("temp") != RETURN_ERROR:
+            cmd_args = "$TMP"
+        elif loc.find("download") != RETURN_ERROR:
+            cmd_args = "$HOME/Downloads"
+        elif loc.find("pictures")!= RETURN_ERROR:
+            cmd_args = "$HOME/Pictures"
+        else:
+            return RETURN_ERROR
+        return cmd_args
+
+
     # Method implementation to go somewhere
     def __go(self):
         res = self.speech
-        cmd_args = ""
-        # Special Cases (Home, temp, downloads, pictures):
-        if res.find("home") != RETURN_ERROR:
-            cmd_args = "$HOME"
-        elif res.find("temp") != RETURN_ERROR:
-            cmd_args = "$TMP"
-        elif res.find("downloads") != RETURN_ERROR:
-            cmd_args = "$HOME/Downloads"
-        elif res.find("pictures")!= RETURN_ERROR:
-            cmd_args = "$HOME/Pictures"
+        cmd_args = self.__common_dest(res)
+        if cmd_args != RETURN_ERROR:
+            return "cd " + cmd_args
         else:
             print("Couldn't recognize destination. Trying absolute path")
             if res.find("to") != RETURN_ERROR:
-                cmd_args = res[res.find("to ")+3:]
+                return "cd " + res[res.find("to ")+3:]
             else:
                 print("Malformed sentence. expecting Go to <destination>")
                 return RETURN_ERROR
-        return "cd " + cmd_args
 
 
     # Public Methods
