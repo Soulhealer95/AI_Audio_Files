@@ -25,6 +25,10 @@
 
 #!/bin/bash
 
+
+# Defines
+RECORD_TEMP_FILE="temp_record.wav"
+
 echo "==========Welcome to the Bootstrap for this Speech Recognition Software==========="
 echo "******* Commands understood *******"
 echo "go home/ 'to <destination>'"
@@ -45,6 +49,15 @@ fi
 
 echo "=====Done!======="
 echo "Starting Program..."
-echo ""
+echo "..."
+echo "..."
+
+
 sleep 1
-python3 `pwd`/start_deep.py $1
+ARG=$1
+if [[ $ARG -eq "" ]];then
+	echo "Please say what would you like me to do? [Up to 5 seconds]"
+	arecord -q -d 5 -t wav -f cd $RECORD_TEMP_FILE
+	ARG=$RECORD_TEMP_FILE
+fi
+python3 `pwd`/start_deep.py $ARG

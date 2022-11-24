@@ -27,8 +27,9 @@ __license__="""
 import deep_abstraction as deep
 # Use General Text Processing Class
 import text_processing as tp
-import os
-import sys
+
+# Other system libs
+import os,sys
 
 
 # Work from Project Dir
@@ -37,12 +38,9 @@ cur_dir = os.getcwd()
 PATH_TO_MODEL=cur_dir + "/deepspeech-0.9.3-models.pbmm"
 PATH_TO_SCORER=cur_dir + "/deepspeech-0.9.3-models.scorer"
 
-# try to get this from commandline if possible
+# Get this from commandline
 if len(sys.argv) != 1:
     PATH_TO_WAV= cur_dir + "/" + sys.argv[1]
-else:
-    PATH_TO_WAV=cur_dir + "/audio_files/Hello_World.wav"
-    print(f"No audio file provided.\nUsing {PATH_TO_WAV}\nYou could provide path to audio file with script...\n")
 
 # Initialize the Model
 deep_model = deep.deep_speech_abs(PATH_TO_MODEL,PATH_TO_SCORER, PATH_TO_WAV)

@@ -8,7 +8,7 @@
 	- numpy
 	- subprocess
 	- shlex
-- requires sox to be installed on the system
+- requires sox and arecord to be installed on the system
 - Python3.8 has been tested on an `x86_64` VM.
 - Tested with Ubuntu 20.04
  
@@ -22,6 +22,7 @@
 
 # Usage
 - `./start_script.sh [relative path to audio wav file]`
+If no file is provided, it will try to listen for an audio for 5 seconds
 - example:
 ```
 ~/projects/AI_Audio_Files$ ./start_script.sh audio_files/Go_Home.wav 
