@@ -55,7 +55,8 @@ echo "..."
 
 sleep 1
 ARG=$1
-if [[ $ARG -eq "" ]];then
+# If argument was not provided, try recording voice
+if [[ -z "$ARG" ]];then
 	echo "Please say what would you like me to do? [Up to 5 seconds]"
 	arecord -q -d 5 -t wav -f cd $RECORD_TEMP_FILE
 	ARG=$RECORD_TEMP_FILE
