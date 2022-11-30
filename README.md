@@ -1,4 +1,4 @@
-# AI Audio
+# POSIX SPEECH RECOGNITION
 - Attempt on Speech Recognition Software for UNIX based systems 
 - Currently uses Python library called DeepSpeech
 - Application has been written to follow a standard API for speech recognition and processing
