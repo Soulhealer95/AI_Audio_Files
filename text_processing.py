@@ -35,13 +35,25 @@ BASH_SCRIPT = "/tmp/test.sh"
 
 
 # Actual Class for Backend
+# Class            Text_Processing
+# Desc:
+# Class that contains methods to perform an action once you have a text from user
+# function
+# Args:
+# @text     str    String of text
 class Text_Processing:
     def __init__(self, text):
         self.speech = text
         self.original = self.speech
         self.command = ""
 
-    # Private Methods
+    # Method  (Private) __extract_cmd 
+    # Desc:
+    # Converts text to a UNIX command for program to execute at the end
+    # Args:
+    # N/A
+    # Returns:
+    # @command  str  string output from one of the other methods or -1 on error
     def __extract_cmd(self):
         space_index = self.speech.find(" ")
         command = self.speech[:space_index]
@@ -79,11 +91,23 @@ class Text_Processing:
         output = getattr(self,command)
         return output()
 
-
+    # Method  (Private) __execute_cmd 
+    # Desc:
+    # Actually execute a proper Linux command using a shell script
+    # Command must be usable
+    # Now I've done this in a hacky way. I create a temp bash script with the command,
+    # then run that and ensure that the child shell stays on to people can do what they want.
+    # This is good for demo purposes however would have to be integrated into the shell itself.
+    # The best way to do that would be to make this program the pty and then it would be a man in the middle
+    # and check all inputs and execute them
+    # Args:
+    # N/A
+    # Returns:
+    # @command  str  string output from one of the other methods
     def __execute_cmd(self):
-        # Lets give ourselves some clear space shall we?"
+        # get command and handle special cases appropriately
         self.command = self.__extract_cmd()
-        print(f"\n\n\n===== Executing Command for '{self.original}' ===== \n\n\n")
+        print(f"\n===== Executing Command for '{self.original}' ===== \n")
         if self.command == RETURN_ERROR:
             print(SORRY_TEXT + "'" + self.speech + "'")
             return
@@ -91,10 +115,7 @@ class Text_Processing:
             print(HELLO_TEXT)
             return
         else:
-            # Command must be usable
-            # Now I've done this in a hacky way. I create a temp bash script with the command,
-            # then run that and ensure that the child shell stays on to people can do what they want.
-            # This is good for demo purposes however would have to be integrated into the shell itself. Which will be tricky.
+            # Create bash script and then execute it from a fixed location
             command_prep = "echo '#!/bin/bash\n"+ self.command  + "\n $SHELL' > " + BASH_SCRIPT + "; chmod  -x " + BASH_SCRIPT
             script_location = ". " + BASH_SCRIPT
             print(f"Running {self.command} in a new shell; type 'exit' to leave: ")
@@ -103,8 +124,14 @@ class Text_Processing:
             subprocess.run(command_prep, shell=True)
             subprocess.run(script_location, shell=True)
 
+    # Method  (Private) __common_dest
+    # Desc:
     # Given location, return a path of commonly known locations
-    # Special Cases (Home, temp, downloads, pictures):
+    # Special Cases (Home, temp, downloads, pictures)
+    # Args:
+    # @loc      str  abbreviations to translate
+    # Returns:
+    # @cmd_args  str  string output of translated path
     def __common_dest(self, loc):
         cmd_args = ""
         if loc.find("home") != RETURN_ERROR:
@@ -119,15 +146,22 @@ class Text_Processing:
             return RETURN_ERROR
         return cmd_args
 
-    # Public Methods
+    # Method  (Public) move 
+    # Desc:
+    # Creates a move or copy command 
+    # expect format `move x to y`. so the first argument would be after the first space and just before the first and only 'to'
+    # If path is recognized, use that or use the argment as absolute path
+    # Args:
+    # @copy_instead     bool  if true, change command to copy
+    # Returns:
+    # @cmd_args  str  string output of command to execute
     def move(self, copy_instead):
         cmd = "mv "
         to_index = self.speech.find(" to ")
         if to_index == RETURN_ERROR:
             print("Malformed sentence. expecting move <src> to <destination>")
             return RETURN_ERROR
-
-        # expect format `move x to y`. so the first argument would be after the first space and just before the first and only 'to'
+        # Check format
         arg1 = self.speech[self.speech.find(" ")+1:to_index]
         arg2 = self.speech[to_index+4:]
         dest = self.__common_dest(arg2)
@@ -138,10 +172,25 @@ class Text_Processing:
             cmd = "cp "
         return cmd + arg1 + " " + dest
 
+    # Method  (Public) copy
+    # Desc:
+    # Wrapper for move command with copy enabled
+    # Args:
+    # N/A
+    # Returns:
+    # @cmd_args  str  string output of command to execute
     def copy(self):
         return self.move(1)
 
 
+    # Method  (Public) open 
+    # Desc:
+    # Creates a command to open most extensions of files
+    # expect a format `open <filename>` 
+    # Args:
+    # N/A
+    # Returns:
+    #  str  string output of command to execute
     def open(self):
         # Get a file name (without extension)
         arg = self.speech[self.speech.find("open ")+5:]
@@ -161,7 +210,14 @@ class Text_Processing:
             print("Trying to open " + file_to_open)
             return "xdg-open " + file_to_open
 
-    # Method implementation to go somewhere
+    # Method  (Public) go 
+    # Desc:
+    # Creates a command to visit a location
+    # expect a format `go to <location>` 
+    # Args:
+    # N/A
+    # Returns:
+    #  str  string output of command to execute
     def go(self):
         res = self.speech
         cmd_args = self.__common_dest(res)
@@ -175,7 +231,13 @@ class Text_Processing:
                 print("Malformed sentence. expecting Go to <destination>")
                 return RETURN_ERROR
 
-
+    # Method  (Public) execute 
+    # Desc:
+    # Wrapper for the private execute_cmd method
+    # Args:
+    # N/A
+    # Returns:
+    # N/A
     def execute(self):
         self.__execute_cmd()
         return

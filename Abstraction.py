@@ -31,13 +31,25 @@ import numpy as np
 
 # Class for basic Speech to Text
 # Should allow for use with any library
-# Requires an audio file and rate
+# SuperClass for Frontend
+# Class           Speech 
+# Desc:
+# Class that contains basic APIs for any libraries to use
+# The expectation is that any library being used will override the methods provided in this superclass
+# All clients can then be provided the methods in this API for documentation to connect
+# Most of these methods should be skeletons
+# function
+# Args:
+# @model     ptr    pointer to model created by library
+# @sample    ptr    pointer to audio file (wav format)
+# @rate      int    sample rate of audio
+# @size      int    size of audio output (np.intX format)
 class Speech:
     def __init__(self, model, sample, rate, size):
         self.sample_wav = sample
         self.model = model
         self.rate = rate
-        self.size = size # audio output size (e.g. np.int16)
+        self.size = size
         self.audio = ""
         self.text = ""
 
