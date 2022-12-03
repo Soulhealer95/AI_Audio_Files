@@ -35,6 +35,7 @@ import os,sys
 # Work from Project Dir
 cur_dir = os.getcwd()
 
+# DeepSpeech Specific Things
 PATH_TO_MODEL=cur_dir + "/deepspeech-0.9.3-models.pbmm"
 PATH_TO_SCORER=cur_dir + "/deepspeech-0.9.3-models.scorer"
 
@@ -42,10 +43,10 @@ PATH_TO_SCORER=cur_dir + "/deepspeech-0.9.3-models.scorer"
 if len(sys.argv) != 1:
     PATH_TO_WAV= cur_dir + "/" + sys.argv[1]
 
-# Initialize the Model
+# Initialize the Model and get the text from voice
 deep_model = deep.deep_speech_abs(PATH_TO_MODEL,PATH_TO_SCORER, PATH_TO_WAV)
 result = deep_model.speech_to_text()
 
-# Create new class and execute
+# Create new class and execute command
 post_pr = tp.Text_Processing(result)
 post_pr.execute()
