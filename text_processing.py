@@ -77,6 +77,9 @@ class Text_Processing:
         # Greetings
         elif command in ["hi", "hello", "hey"]:
            return HELLO_OUT 
+        # Create file or directory
+        elif command in ["make", "create"]:
+            command = "create"
         # Couldn't find it!
         else:
             return RETURN_ERROR
@@ -145,6 +148,8 @@ class Text_Processing:
         else:
             return RETURN_ERROR
         return cmd_args
+
+    # Methods for Commands
 
     # Method  (Public) move 
     # Desc:
@@ -230,6 +235,26 @@ class Text_Processing:
             else:
                 print("Malformed sentence. expecting Go to <destination>")
                 return RETURN_ERROR
+
+    # Method  (Public) create
+    # Desc:
+    # Creates a command to create an empty file or directory
+    # expect a format `create f-<word> <filename>`
+    # for directory expect `create d-<word> <directory name>`
+    # Args:
+    # N/A
+    # Returns:
+    #  str  string output of command to execute
+    def create(self):
+        res = self.speech[self.speech.find("create ")+len("create "):]
+        if res[0] == 'f':
+            cmd = "touch "
+        elif res[0] == 'd':
+            cmd = "mkdir -p "
+        else:
+            return RETURN_ERROR
+        cmd_arg = res[res.find(" ")+1:]
+        return cmd + cmd_arg
 
     # Method  (Public) execute 
     # Desc:
