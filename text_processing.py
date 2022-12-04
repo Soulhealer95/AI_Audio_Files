@@ -200,20 +200,31 @@ class Text_Processing:
         # Get a file name (without extension)
         arg = self.speech[self.speech.find("open ")+5:]
         curr_dir = os.getcwd()
-        file_to_open = ""
 
-        # Find a file with that name in current directory
-        for root, dirs, files in os.walk(curr_dir):
-            for name in files:
-                # return the first file found with that arg name
-                if name.find(arg) != RETURN_ERROR:
-                    file_to_open = curr_dir + "/" + name
-                    break
-        if file_to_open == "":
-            return RETURN_ERROR
-        else:
-            print("Trying to open " + file_to_open)
+        if arg[0] == 'f':
+            # open a file in the current folder
+            file_to_open = arg[arg.find(" ")+1:]
+            print("Trying to open file: " + file_to_open)
             return "xdg-open " + file_to_open
+        elif arg[0] == 'd':
+            # open a directory in the current folder
+            directory_to_open = arg[arg.find(" ")+1:]
+            print("Trying to open foler: " + directory_to_open)
+            return "xdg-open " + directory_to_open
+        else:
+            found_file = ""
+            # Find a file with that name in current directory
+            for root, dirs, files in os.walk(curr_dir):
+                for name in files:
+                    # return the first file found with that arg name
+                    if name.find(arg) != RETURN_ERROR:
+                        found_file = curr_dir + "/" + name
+                        break
+            if found_file == "":
+                return RETURN_ERROR
+            else:
+                print("Trying to open " + found_file)
+                return "xdg-open " + found_file
 
     # Method  (Public) go 
     # Desc:
