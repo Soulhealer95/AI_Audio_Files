@@ -25,8 +25,13 @@ __license__ = """
 import Abstraction as ab
 
 # Library imports
+import logging
+import os
 import deepspeech as ds
 import numpy as np
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
+logging.getLogger('tensorflow').setLevel(logging.FATAL)
 
 # Override class functions and tailor to DeepSpeech lib
 class deep_speech_abs(ab.Speech):

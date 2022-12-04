@@ -58,7 +58,7 @@ class Text_Processing:
         space_index = self.speech.find(" ")
         command = self.speech[:space_index]
         rest = self.speech[space_index+1:]
-        print("checking " + command)
+        print("\nCommand: " + command)
 
         # A better system I think. 
         # replaces the malformed variations into command that we understand manually
