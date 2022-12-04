@@ -160,7 +160,7 @@ class Text_Processing:
     # @copy_instead     bool  if true, change command to copy
     # Returns:
     # @cmd_args  str  string output of command to execute
-    def move(self, copy_instead):
+    def move(self, copy_instead=0):
         cmd = "mv "
         to_index = self.speech.find(" to ")
         if to_index == RETURN_ERROR:
@@ -171,8 +171,10 @@ class Text_Processing:
         arg2 = self.speech[to_index+4:]
         dest = self.__common_dest(arg2)
         if dest == RETURN_ERROR:
-            print("Couldn't recognize destination. Trying as absolute path")
-            dest = arg2
+            # print("Couldn't recognize from common destination. Trying as absolute path")
+            # trying the present working directory
+            curr_dir = os.getcwd()
+            dest = curr_dir + "/" + arg2
         if copy_instead == 1:
             cmd = "cp "
         return cmd + arg1 + " " + dest
