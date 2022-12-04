@@ -25,27 +25,47 @@
 
 #!/bin/bash
 
+# flags
+verbose=0
+
+ARG=$1
+
+# get options
+for i do
+	if [[ $i == "-v" ]];
+	then
+		verbose=1
+	else
+		ARG=$i
+	fi
+done
 
 # Defines
 RECORD_TEMP_FILE="temp_record.wav"
 
-echo "==================Initializing Environment==================="
+echo "Initializing Environment..."
 if [[ `which virtualenv` == "" ]]; then
 	echo "virtualenv is required for this to work properly!"
 	echo "please install with apt-get install virtualenv"
 	exit
 fi
-virtualenv -p python3 $HOME/tmp/deepspeech-venv/
+
+if (( verbose==0 )); then
+	virtualenv -q -p python3 $HOME/tmp/deepspeech-venv/
+else
+	virtualenv -p python3 $HOME/tmp/deepspeech-venv/
+fi
+
 source $HOME/tmp/deepspeech-venv/bin/activate
 if [[ `pip3 list | grep -i deep` == "" ]]; then
 	pip3 install deepspeech;
 fi
 
-echo "=====Done!======="
+(( verbose==1 )) && echo "=====Done!======="
 echo "Starting Program..."
 
 sleep 1
-ARG=$1
+
 # If argument was not provided, try recording voice
 if [[ -z "$ARG" ]];then
 	echo "Please say what would you like me to do? [Up to 5 seconds]"

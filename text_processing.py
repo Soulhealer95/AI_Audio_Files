@@ -58,7 +58,7 @@ class Text_Processing:
         space_index = self.speech.find(" ")
         command = self.speech[:space_index]
         rest = self.speech[space_index+1:]
-        print("checking " + command)
+        print("\nCommand: " + command)
 
         # A better system I think. 
         # replaces the malformed variations into command that we understand manually
@@ -160,7 +160,7 @@ class Text_Processing:
     # @copy_instead     bool  if true, change command to copy
     # Returns:
     # @cmd_args  str  string output of command to execute
-    def move(self, copy_instead):
+    def move(self, copy_instead=0):
         cmd = "mv "
         to_index = self.speech.find(" to ")
         if to_index == RETURN_ERROR:
@@ -171,8 +171,10 @@ class Text_Processing:
         arg2 = self.speech[to_index+4:]
         dest = self.__common_dest(arg2)
         if dest == RETURN_ERROR:
-            print("Couldn't recognize destination. Trying as absolute path")
-            dest = arg2
+            # print("Couldn't recognize from common destination. Trying as absolute path")
+            # trying the present working directory
+            curr_dir = os.getcwd()
+            dest = curr_dir + "/" + arg2
         if copy_instead == 1:
             cmd = "cp "
         return cmd + arg1 + " " + dest
@@ -200,20 +202,31 @@ class Text_Processing:
         # Get a file name (without extension)
         arg = self.speech[self.speech.find("open ")+5:]
         curr_dir = os.getcwd()
-        file_to_open = ""
 
-        # Find a file with that name in current directory
-        for root, dirs, files in os.walk(curr_dir):
-            for name in files:
-                # return the first file found with that arg name
-                if name.find(arg) != RETURN_ERROR:
-                    file_to_open = curr_dir + "/" + name
-                    break
-        if file_to_open == "":
-            return RETURN_ERROR
-        else:
-            print("Trying to open " + file_to_open)
+        if arg[0] == 'f':
+            # open a file in the current folder
+            file_to_open = arg[arg.find(" ")+1:]
+            print("Trying to open file: " + file_to_open)
             return "xdg-open " + file_to_open
+        elif arg[0] == 'd':
+            # open a directory in the current folder
+            directory_to_open = arg[arg.find(" ")+1:]
+            print("Trying to open foler: " + directory_to_open)
+            return "xdg-open " + directory_to_open
+        else:
+            found_file = ""
+            # Find a file with that name in current directory
+            for root, dirs, files in os.walk(curr_dir):
+                for name in files:
+                    # return the first file found with that arg name
+                    if name.find(arg) != RETURN_ERROR:
+                        found_file = curr_dir + "/" + name
+                        break
+            if found_file == "":
+                return RETURN_ERROR
+            else:
+                print("Trying to open " + found_file)
+                return "xdg-open " + found_file
 
     # Method  (Public) go 
     # Desc:
